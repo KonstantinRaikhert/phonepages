@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13.3
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.postgres
+
+  app:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - static_value:/code/static/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.envs/.postgres
+      - ./.envs/.django
+  migrations:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    volumes:
+      - static_value:/code/static/
+    command: >
+      sh -c "python manage.py migrate &&
+            #  python manage.py collectstatic | yes &&
+            #  python manage.py createadmin &&
+            #  python manage.py filldb"
+    depends_on:
+      - app
+    env_file:
+      - ./.envs/.postgres
+      - ./.envs/.django
+
+volumes:
+  postgres_data:
+  static_value:
