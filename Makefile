@@ -9,3 +9,7 @@ admin:
 	python manage.py createadmin
 deldb:
 	python manage.py flush
+shell:
+	python manage.py shell_plus
+filldb:
+	python manage.py filldb
