@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "django_extensions",
     "drf_yasg2",
+    "phone_field",
     "rest_framework",
     "rest_framework.authtoken",
 ]
@@ -72,7 +73,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "phonebook.urls"
+ROOT_URLCONF = "project-settings.urls"
 
 TEMPLATES = [
     {
@@ -90,7 +91,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "phonebook.wsgi.application"
+WSGI_APPLICATION = "project-settings.wsgi.application"
 
 
 # Database

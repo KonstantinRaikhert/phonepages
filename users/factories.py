@@ -21,7 +21,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(
         lambda n: "user_%d" % (AdvancedUser.objects.count())
     )
-    password = "foodgram"
+    password = "phonebook"
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):

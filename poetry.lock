@@ -189,6 +189,17 @@ python-versions = ">=3.5"
 Django = ">=2.2"
 
 [[package]]
+name = "django-phone-field"
+version = "1.8.1"
+description = "Lightweight model and form field for phone numbers in Django"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">=1.10"
+
+[[package]]
 name = "djangorestframework"
 version = "3.12.4"
 description = "Web APIs for Django, made easy."
@@ -688,7 +699,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "4f65c966f27150b8080c3045d44e9a4414759173120fe8455147bd7f7f5d3399"
+content-hash = "182c85a723bdace9c698389a4ccd342ffe18f4ad8b0bfa3650b531345846f70d"
 
 [metadata.files]
 asgiref = [
@@ -754,6 +765,10 @@ django-extensions = [
 django-filter = [
     {file = "django-filter-2.4.0.tar.gz", hash = "sha256:84e9d5bb93f237e451db814ed422a3a625751cbc9968b484ecc74964a8696b06"},
     {file = "django_filter-2.4.0-py3-none-any.whl", hash = "sha256:e00d32cebdb3d54273c48f4f878f898dced8d5dfaad009438fe61ebdf535ace1"},
+]
+django-phone-field = [
+    {file = "django-phone-field-1.8.1.tar.gz", hash = "sha256:db63af60fc3a3c66b9faa7e72bb7972cd1518299f2e93d68dd95d8df6214f7ed"},
+    {file = "django_phone_field-1.8.1-py3-none-any.whl", hash = "sha256:407e74b65e8f7dd14d0a0aa89e277516d57ad6a09ce992cdd94e15b1624b9961"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.12.4-py3-none-any.whl", hash = "sha256:6d1d59f623a5ad0509fe0d6bfe93cbdfe17b8116ebc8eda86d45f6e16e819aaf"},
