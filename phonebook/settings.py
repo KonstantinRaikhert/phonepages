@@ -49,12 +49,16 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "django_filters",
+    "django_extensions",
     "drf_yasg2",
     "rest_framework",
     "rest_framework.authtoken",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "users",
+    "corporations",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -122,11 +126,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.AdvancedUser"
+
+AUTHENTICATION_BACKENDS = ["users.backends.UserOrEmailBackend"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "ru-Ru"
+LANGUAGE_CODE = "en-Us"
 
 TIME_ZONE = "UTC"
 
@@ -149,7 +156,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "corporations.paginations.PhoneBookPagination",
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ),
