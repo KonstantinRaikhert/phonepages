@@ -12,7 +12,9 @@ class Phone(models.Model):
         PERSONAL = "Personal phone", gettext_lazy("Личный")
         FAX = "Fax phone", gettext_lazy("Факс")
 
-    phone_number = PhoneField(help_text="Телефонный номер")
+    phone_number = PhoneField(
+        help_text="Телефонный номер", verbose_name="Телефонный номер"
+    )
     type = models.CharField(
         verbose_name="Тип номера", max_length=15, choices=PhoneType.choices
     )
@@ -26,7 +28,9 @@ class Phone(models.Model):
 
 
 class Profession(models.Model):
-    profession = models.CharField(max_length=150, unique=True)
+    profession = models.CharField(
+        verbose_name="Должность", max_length=150, unique=True
+    )
 
     class Meta:
         verbose_name = "Профессия"
@@ -38,9 +42,11 @@ class Profession(models.Model):
 
 
 class Firm(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    address = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.CharField(
+        verbose_name="Название компании", max_length=50, unique=True
+    )
+    address = models.CharField(verbose_name="Адрес", max_length=100)
+    description = models.TextField(verbose_name="Описание")
 
     class Meta:
         verbose_name = "Компания"
@@ -52,14 +58,20 @@ class Firm(models.Model):
 
 
 class Employee(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
+    first_name = models.CharField(verbose_name="Имя", max_length=50)
+    last_name = models.CharField(verbose_name="Фамилия", max_length=50)
+    middle_name = models.CharField(verbose_name="Отчество", max_length=50)
     firm = models.ForeignKey(
-        Firm, on_delete=models.PROTECT, related_name="employees"
+        Firm,
+        on_delete=models.PROTECT,
+        related_name="employees",
+        verbose_name="Компания",
     )
     profession = models.ForeignKey(
-        Profession, on_delete=models.SET_NULL, null=True
+        Profession,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Должность",
     )
     phone = models.ManyToManyField(
         Phone, related_name="employees", blank=False, verbose_name="Телефоны"
@@ -89,9 +101,15 @@ class Employee(models.Model):
 
 
 class UserFirm(models.Model):
-    user = models.ForeignKey(AdvancedUser, on_delete=models.PROTECT)
-    firm = models.ForeignKey(Firm, on_delete=models.PROTECT)
-    is_create = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        AdvancedUser, on_delete=models.PROTECT, verbose_name="Пользователь"
+    )
+    firm = models.ForeignKey(
+        Firm, on_delete=models.PROTECT, verbose_name="Компания"
+    )
+    is_create = models.BooleanField(
+        default=False, verbose_name="Администратор"
+    )
 
     class Meta:
         verbose_name = "Компания пользователя"

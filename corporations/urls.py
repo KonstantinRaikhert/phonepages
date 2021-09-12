@@ -5,10 +5,10 @@ from corporations.views import EmployeeViewSet, FirmViewSet, ProfessionViewSet
 
 router = DefaultRouter()
 
-router.register("organizations", FirmViewSet, basename="organizations")
-router.register("positions", ProfessionViewSet, basename="positions")
+router.register("firms", FirmViewSet, basename="firms")
+router.register("professions", ProfessionViewSet, basename="professions")
 router.register(
-    r"organizations/(?P<org_id>\d+)/employees",
+    r"firms/(?P<org_id>\d+)/employees",
     EmployeeViewSet,
     basename="employees",
 )
