@@ -10,8 +10,6 @@ from corporations.models import (
 )
 from users.models import AdvancedUser
 
-# from users.models import AdvancedUser
-
 fake = Faker()
 
 
