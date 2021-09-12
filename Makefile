@@ -13,3 +13,4 @@ shell:
 	python manage.py shell_plus
 filldb:
 	python manage.py filldb
+	python manage.py createadmin

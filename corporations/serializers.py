@@ -52,7 +52,7 @@ class FirmSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Firm
-        fields = ["name", "employees"]
+        fields = ["id", "name", "employees"]
 
     def get_employees(self, obj):
         request = self.context.get("request")

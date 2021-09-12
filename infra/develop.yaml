@@ -21,17 +21,17 @@ services:
     env_file:
       - ./.envs/.postgres
       - ./.envs/.django
+    depends_on:
+      - postgres
+
   migrations:
     build:
       context: ../
       dockerfile: Dockerfile
-    volumes:
-      - static_value:/code/static/
     command: >
       sh -c "python manage.py migrate &&
-            #  python manage.py collectstatic | yes &&
-            #  python manage.py createadmin &&
-            #  python manage.py filldb"
+             python manage.py createadmin &&
+             python manage.py filldb"
     depends_on:
       - app
     env_file:

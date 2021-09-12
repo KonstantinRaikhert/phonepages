@@ -6,7 +6,7 @@ from corporations.models import (
     Firm,
     Phone,
     Profession,
-    SuperUserFirm,
+    UserFirmRelation,
 )
 from users.models import AdvancedUser
 
@@ -43,6 +43,16 @@ class FirmFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("company", locale="ru_RU")
     address = factory.Faker("address", locale="ru_RU")
     description = factory.Faker("text", max_nb_chars=1000, locale="ru_RU")
+    creator = factory.Iterator(AdvancedUser.objects.all())
+    access_edit = factory.Iterator(AdvancedUser.objects.all())
+
+    @factory.post_generation
+    def access_edit(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        users = AdvancedUser.objects.order_by("?")[:3]
+        self.access_edit.add(*users)
 
 
 class EmployeeFactory(factory.django.DjangoModelFactory):
@@ -64,11 +74,10 @@ class EmployeeFactory(factory.django.DjangoModelFactory):
         self.phone.add(*phones)
 
 
-class SuperUserFactory(factory.django.DjangoModelFactory):
+class UserFirmRelationFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = SuperUserFirm
+        model = UserFirmRelation
         django_get_or_create = ["user"]
 
     user = factory.Iterator(AdvancedUser.objects.all())
     firm = factory.Iterator(Firm.objects.all())
-    is_create = True
