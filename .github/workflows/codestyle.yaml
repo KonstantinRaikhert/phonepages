@@ -2,10 +2,6 @@ name: codestyle PEP8
 
 on: push
 
-defaults:
-  run:
-    working-directory: backend
-
 jobs:
   codestyle:
     name: Check PEP8 and codestyle
