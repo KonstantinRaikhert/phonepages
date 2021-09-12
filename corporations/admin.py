@@ -12,6 +12,13 @@ class PhoneInlineNumber(admin.TabularInline):
     verbose_name_plural = "Телефоны"
 
 
+class UserFirmRelationAdminInline(admin.TabularInline):
+    model = Firm.access_edit.through
+    extra = 0
+    verbose_name_plural = "Пользователи с правами администратора"
+    verbose_name = "Пользователь с правами администратора"
+
+
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ("full_name", "profession", "firm")
     list_filter = ("firm",)
@@ -36,6 +43,8 @@ class EmployeeAdmin(admin.ModelAdmin):
 class FirmAdmin(admin.ModelAdmin):
     list_display = ("name", "address")
     search_fields = ("name", "address")
+
+    inlines = [UserFirmRelationAdminInline]
 
 
 class ProfessionAdmin(admin.ModelAdmin):

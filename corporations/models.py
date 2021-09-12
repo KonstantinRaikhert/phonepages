@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy
 from phone_field import PhoneField
 
@@ -43,10 +44,32 @@ class Profession(models.Model):
 
 class Firm(models.Model):
     name = models.CharField(
-        verbose_name="Название компании", max_length=50, unique=True
+        verbose_name="Название компании", max_length=150, unique=True
     )
-    address = models.CharField(verbose_name="Адрес", max_length=100)
+    address = models.CharField(verbose_name="Адрес", max_length=150)
     description = models.TextField(verbose_name="Описание")
+    creator = models.ForeignKey(
+        AdvancedUser,
+        verbose_name="Создатель компании в базе",
+        related_name="creator",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    access_edit = models.ManyToManyField(
+        AdvancedUser, through="UserFirmRelation"
+    )
+
+    def access_list(self):
+        list_email = []
+        for item in self.access_edit.all():
+            list_email.append(item.email)
+        return dict(
+            id=self.id,
+            name=self.name,
+            address=self.address,
+            description=self.description,
+            access_edit=list_email,
+        )
 
     class Meta:
         verbose_name = "Компания"
@@ -94,27 +117,27 @@ class Employee(models.Model):
             middle_name=self.middle_name,
             firm=self.firm,
         )
-        if employee:
+        if self not in employee and employee:
             raise ValidationError(
                 "Сотрудник уже зарегистрирован в этой компании"
             )
 
 
-class UserFirm(models.Model):
+class UserFirmRelation(models.Model):
     user = models.ForeignKey(
-        AdvancedUser, on_delete=models.PROTECT, verbose_name="Пользователь"
+        AdvancedUser,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Пользователь",
     )
     firm = models.ForeignKey(
-        Firm, on_delete=models.PROTECT, verbose_name="Компания"
-    )
-    is_create = models.BooleanField(
-        default=False, verbose_name="Администратор"
+        Firm, null=True, on_delete=models.SET_NULL, verbose_name="Компания"
     )
 
     class Meta:
-        verbose_name = "Компания пользователя"
-        verbose_name_plural = "Компании пользователья"
+        verbose_name = "Пользователь с правами администратора"
+        verbose_name_plural = "Пользователи с правами администратора"
         ordering = ["firm"]
-
-    def __str__(self):
-        return f"{self.user} - {self.firm}"
+        constraints = [
+            UniqueConstraint(fields=["user", "firm"], name="unique_userfirm")
+        ]

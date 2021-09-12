@@ -34,7 +34,7 @@ schema_view = get_schema_view(
 
 extra_patterns = [
     path("", include("users.urls")),
-    # path("", include("corporations.urls")),
+    path("", include("corporations.urls")),
 ]
 
 urlpatterns = [

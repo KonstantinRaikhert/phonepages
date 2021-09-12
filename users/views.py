@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 from rest_framework import permissions, status
 from rest_framework.authtoken.models import Token
@@ -16,10 +17,19 @@ class TokenAPIView(APIView):
     permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(
-        methods=["post"],
+        # methods=["post"],
         request_body=TokenSerializer,
         responses={
-            201: "{ auth_token: token }",
+            201: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "auth_token": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="token",
+                    )
+                },
+            )
         },
     )
     @action(detail=False, methods=["post"])
@@ -42,7 +52,15 @@ class LogoutAPIView(APIView):
     @swagger_auto_schema(
         methods=["post"],
         responses={
-            201: "{ message: The user has logged out }",
+            201: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "message": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="The user has logout",
+                    )
+                },
+            )
         },
     )
     @action(detail=False, methods=["post"])
